@@ -21,4 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "More"
 include(":app")
- 
+include(":core")
+include(":core:data")
+include(":core:domain")
+include(":core:presentation")
