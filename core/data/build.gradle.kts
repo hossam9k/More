@@ -87,7 +87,7 @@ android {
                 "\"${localProperties["dev.clear_cache"]}\""
             )
             buildConfigField("String", "MAP_KEY", "\"${localProperties["dev.map_key"]}\"")
-            signingConfig = signingConfigs.getByName("debug")
+            //signingConfig = signingConfigs.getByName("debug")
         }
         create("releaseExternalQA") {
             isMinifyEnabled = false
@@ -109,7 +109,7 @@ android {
                 "\"${localProperties["dev.clear_cache"]}\""
             )
             buildConfigField("String", "MAP_KEY", "\"${localProperties["release.map_key"]}\"")
-            signingConfig = signingConfigs.getByName("releaseExternalQA")
+          //  signingConfig = signingConfigs.getByName("releaseExternalQA")
 
         }
         getByName("release") {
@@ -130,7 +130,7 @@ android {
                 "\"${localProperties["dev.clear_cache"]}\""
             )
             buildConfigField("String", "MAP_KEY", "\"${localProperties["release.map_key"]}\"")
-            signingConfig = signingConfigs.getByName("release")
+            //signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -138,35 +138,35 @@ android {
         }
     }
 
-    val app = "app"
-    val store = "store"
-    flavorDimensions.add(app)
-    flavorDimensions.add(store)
-
-    productFlavors {
-        create("google") {
-            dimension = store
-            applicationIdSuffix = ".google"
-            versionNameSuffix = "-google"
-        }
-        create("huawei") {
-            dimension = store
-            applicationIdSuffix = ".huawei"
-            versionNameSuffix = "-huawei"
-        }
-
-        create("driver") {
-            dimension = app
-            applicationIdSuffix = ".driver"
-            versionNameSuffix = "-driver"
-        }
-        create("client") {
-            dimension = app
-            applicationIdSuffix = ".client"
-            versionNameSuffix = "-client"
-        }
-
-    }
+//    val app = "app"
+//    val store = "store"
+//    flavorDimensions.add(app)
+//    flavorDimensions.add(store)
+//
+//    productFlavors {
+//        create("google") {
+//            dimension = store
+//            applicationIdSuffix = ".google"
+//            versionNameSuffix = "-google"
+//        }
+//        create("huawei") {
+//            dimension = store
+//            applicationIdSuffix = ".huawei"
+//            versionNameSuffix = "-huawei"
+//        }
+//
+//        create("driver") {
+//            dimension = app
+//            applicationIdSuffix = ".driver"
+//            versionNameSuffix = "-driver"
+//        }
+//        create("client") {
+//            dimension = app
+//            applicationIdSuffix = ".client"
+//            versionNameSuffix = "-client"
+//        }
+//
+//    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -196,7 +196,8 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
-    implementation(libs.converter.gson)
     implementation(libs.retrofit.coroutines.adapter)
+    //Gson
+    implementation(libs.converter.gson)
 
 }
