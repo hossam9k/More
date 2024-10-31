@@ -1,7 +1,7 @@
 package com.poc.login.data.service
 
 import com.poc.login.data.requests.LoginRequestBody
-import com.poc.login.data.responses.LoginResponse
+import com.poc.login.data.responses.UserResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.Body
@@ -16,11 +16,11 @@ interface LoginService {
     @POST("$BASE_URL/Auth/Login")
     fun login(
         @Body loginRequestBody: LoginRequestBody,
-    ): Deferred<Response<LoginResponse>>
+    ): Deferred<Response<UserResponse>>
 
 
     @POST("$BASE_URL/Auth/ForgetPassword")
     fun forgetPassword(
-        @Query(EMAIL) email: String
+        @Query(EMAIL) email: String,
     ): Deferred<Response<Unit>>
 }

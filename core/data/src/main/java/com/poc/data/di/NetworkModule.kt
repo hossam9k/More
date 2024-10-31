@@ -1,11 +1,15 @@
 package com.poc.data.di
 
+import android.content.Context
+import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.poc.data.factory.ServiceFactory
 import com.poc.data.BuildConfig
 import com.poc.data.OkHttpClientProvider
+import com.poc.data.connectivity.NetworkMonitorImpl
+import com.poc.data.connectivity.NetworkMonitorInterface
 import com.poc.data.constants.HEADER_INTERCEPTOR_TAG
 import com.poc.data.constants.LOGGING_INTERCEPTOR_TAG
+import com.poc.data.factory.ServiceFactory
 import com.poc.data.okhttp.OkHttpClientProviderInterface
 import dagger.Module
 import dagger.Provides
@@ -24,6 +28,18 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkMonitor(context: Context): NetworkMonitorInterface {
+        return NetworkMonitorImpl(context)
+    }
+
+    @Provides
+    @Singleton
     fun provideOkHttpClientProvider(): OkHttpClientProviderInterface {
         return OkHttpClientProvider()
     }
@@ -34,7 +50,7 @@ class NetworkModule {
     fun provideOkHttpCallFactory(
         @Named(LOGGING_INTERCEPTOR_TAG) okHttpLoggingInterceptor: Interceptor,
         @Named(HEADER_INTERCEPTOR_TAG) headerInterceptor: Interceptor,
-        okHttpClientProvider: OkHttpClientProviderInterface
+        okHttpClientProvider: OkHttpClientProviderInterface,
     ): OkHttpClient {
         return okHttpClientProvider.getOkHttpClient(BuildConfig.PIN_CERTIFICATE)
             .addInterceptor(okHttpLoggingInterceptor)

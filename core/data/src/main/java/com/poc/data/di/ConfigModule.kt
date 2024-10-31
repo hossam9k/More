@@ -3,6 +3,7 @@ package com.poc.data.di
 import com.poc.data.constants.ACCESS_TOKEN_TAG
 import com.poc.data.constants.CLIENT_ID_TAG
 import com.poc.data.constants.LANGUAGE_TAG
+import com.poc.data.constants.USER_ID_TAG
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +16,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ConfigModule {
 
+    @Provides
+    @Singleton
+    @Named(USER_ID_TAG)
+    fun provideUserId(): () -> String? {
+        return { "" } // todo get user id from user prefs later
+    }
     @Provides
     @Singleton
     @Named(LANGUAGE_TAG)
