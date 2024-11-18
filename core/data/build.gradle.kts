@@ -18,7 +18,7 @@ val localPropertiesFilePath: String =
 val localProperties = loadProperties(localPropertiesFilePath)
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -28,11 +28,11 @@ android {
     namespace = "com.poc.data"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.poc.more"
+        //applicationId = "com.poc.more"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        //versionCode = 1
+        //versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -68,12 +68,6 @@ android {
     }
     buildTypes {
         getByName("debug") {
-            isMinifyEnabled = false
-            isDebuggable = false
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
-            enableAndroidTestCoverage = true
-            enableAndroidTestCoverage = true
             buildConfigField(
                 "String",
                 "PIN_CERTIFICATE",
@@ -90,12 +84,6 @@ android {
             //signingConfig = signingConfigs.getByName("debug")
         }
         create("releaseExternalQA") {
-            isMinifyEnabled = false
-            isDebuggable = true
-            applicationIdSuffix = ".releaseExternalQa"
-            versionNameSuffix = "-QA"
-            enableAndroidTestCoverage = false
-            enableAndroidTestCoverage = false
             buildConfigField(
                 "String",
                 "PIN_CERTIFICATE",
@@ -109,14 +97,10 @@ android {
                 "\"${localProperties["dev.clear_cache"]}\""
             )
             buildConfigField("String", "MAP_KEY", "\"${localProperties["release.map_key"]}\"")
-          //  signingConfig = signingConfigs.getByName("releaseExternalQA")
+            //  signingConfig = signingConfigs.getByName("releaseExternalQA")
 
         }
         getByName("release") {
-            isMinifyEnabled = true
-            isDebuggable = false
-            enableUnitTestCoverage = false
-            enableAndroidTestCoverage = false
             buildConfigField(
                 "String",
                 "PIN_CERTIFICATE",
@@ -185,6 +169,8 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":core:datastore"))
 
     // Hilt
     implementation(libs.hilt.android)

@@ -7,13 +7,14 @@ fun loadProperties(filePath: String): Properties {
     val file = rootProject.file(filePath)
     if (!file.exists()) {
         throw FileNotFoundException("Properties file not found at $filePath")
-    }else{
+    } else {
         properties.load(FileInputStream(file))
     }
     return properties
 }
 // Load properties from local.properties file
-val localPropertiesFilePath: String = project.findProperty("localPropertiesFilePath") as? String ?: "dev_credentials.properties"
+val localPropertiesFilePath: String =
+    project.findProperty("localPropertiesFilePath") as? String ?: "dev_credentials.properties"
 val localProperties = loadProperties(localPropertiesFilePath)
 
 plugins {
@@ -42,25 +43,25 @@ android {
     }
 
     signingConfigs {
-        create("release"){
+        create("release") {
             storeFile = file(localProperties.getProperty("release_key.store"))
-            storePassword =  localProperties["release_store.password"] as String
+            storePassword = localProperties["release_store.password"] as String
             keyAlias = localProperties["release_key.alias"] as String
             keyPassword = localProperties["release_key.password"] as String
             enableV1Signing = true
             enableV2Signing = true
         }
         getByName("debug") {
-            storeFile = File(project.rootProject.rootDir,"debug.keystore")
+            storeFile = File(project.rootProject.rootDir, "debug.keystore")
             storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
             enableV1Signing = true
             enableV2Signing = true
         }
-        create("releaseExternalQA"){
+        create("releaseExternalQA") {
             storeFile = file(localProperties.getProperty("qa_key.store"))
-            storePassword =  localProperties["qa_store.password"] as String
+            storePassword = localProperties["qa_store.password"] as String
             keyAlias = localProperties["qa_key.alias"] as String
             keyPassword = localProperties["qa_key.password"] as String
             enableV1Signing = true
@@ -77,11 +78,15 @@ android {
             enableAndroidTestCoverage = true
             buildConfigField("String", "BASE_URL", "\"${localProperties["dev.debug_endpoint"]}\"")
             buildConfigField("String", "DB_VERSION", "\"${localProperties["dev.db_version"]}\"")
-            buildConfigField("String", "CAN_CLEAR_CACHE", "\"${localProperties["dev.clear_cache"]}\"")
+            buildConfigField(
+                "String",
+                "CAN_CLEAR_CACHE",
+                "\"${localProperties["dev.clear_cache"]}\""
+            )
             buildConfigField("String", "MAP_KEY", "\"${localProperties["dev.map_key"]}\"")
             signingConfig = signingConfigs.getByName("debug")
         }
-        create("releaseExternalQA"){
+        create("releaseExternalQA") {
             isMinifyEnabled = false
             isDebuggable = true
             applicationIdSuffix = ".releaseExternalQa"
@@ -90,7 +95,11 @@ android {
             enableAndroidTestCoverage = false
             buildConfigField("String", "BASE_URL", "\"${localProperties["dev.qa_endpoint"]}\"")
             buildConfigField("String", "DB_VERSION", "\"${localProperties["dev.db_version"]}\"")
-            buildConfigField("String", "CAN_CLEAR_CACHE", "\"${localProperties["dev.clear_cache"]}\"")
+            buildConfigField(
+                "String",
+                "CAN_CLEAR_CACHE",
+                "\"${localProperties["dev.clear_cache"]}\""
+            )
             buildConfigField("String", "MAP_KEY", "\"${localProperties["release.map_key"]}\"")
             signingConfig = signingConfigs.getByName("releaseExternalQA")
 
@@ -102,7 +111,11 @@ android {
             enableAndroidTestCoverage = false
             buildConfigField("String", "BASE_URL", "\"${localProperties["dev.prod_endpoint"]}\"")
             buildConfigField("String", "DB_VERSION", "\"${localProperties["dev.db_version"]}\"")
-            buildConfigField("String", "CAN_CLEAR_CACHE", "\"${localProperties["dev.clear_cache"]}\"")
+            buildConfigField(
+                "String",
+                "CAN_CLEAR_CACHE",
+                "\"${localProperties["dev.clear_cache"]}\""
+            )
             buildConfigField("String", "MAP_KEY", "\"${localProperties["release.map_key"]}\"")
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(
@@ -129,12 +142,12 @@ android {
             versionNameSuffix = "-huawei"
         }
 
-        create("driver"){
+        create("driver") {
             dimension = app
             applicationIdSuffix = ".driver"
             versionNameSuffix = "-driver"
         }
-        create("client"){
+        create("client") {
             dimension = app
             applicationIdSuffix = ".client"
             versionNameSuffix = "-client"
@@ -164,6 +177,12 @@ android {
 
 dependencies {
 
+    implementation(project(":features:login"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:protodatastore"))
+    implementation(project(":core:data"))
+    implementation(project(":core:presentation"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -172,6 +191,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.datastore)
 
     // Hilt
     implementation(libs.hilt.android)
@@ -184,6 +204,11 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    // KotlinX
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.collections.immutable)
+    
     //Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
