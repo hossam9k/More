@@ -11,26 +11,26 @@ class PreferencesDataStoreImpl(
 ) : PreferencesDataStore {
 
     override suspend fun setLanguage(language: String) {
-        preferencesDataStore.updateData {
-            it.toBuilder().setLanguage(language).build()
+        preferencesDataStore.updateData { currentPreferencesData ->
+            currentPreferencesData.toBuilder().setLanguage(language).build()
         }
     }
 
     override suspend fun setIsAppLockEnabled(isAppLockedEnabled: Boolean) {
-        preferencesDataStore.updateData {
-            it.toBuilder().setIsAppLockEnabled(isAppLockedEnabled).build()
+        preferencesDataStore.updateData { currentPreferencesData ->
+            currentPreferencesData.toBuilder().setIsAppLockEnabled(isAppLockedEnabled).build()
         }
     }
 
     override suspend fun setNotificationCount(notificationCount: Int) {
-        preferencesDataStore.updateData {
-            it.toBuilder().setNotificationCount(notificationCount).build()
+        preferencesDataStore.updateData { currentPreferencesData ->
+            currentPreferencesData.toBuilder().setNotificationCount(notificationCount).build()
         }
     }
 
     override suspend fun setMoneyBalance(moneyBalance: Long) {
-        preferencesDataStore.updateData {
-            it.toBuilder().setMoneyBalance(moneyBalance).build()
+        preferencesDataStore.updateData { currentPreferencesData ->
+            currentPreferencesData.toBuilder().setMoneyBalance(moneyBalance).build()
         }
     }
 
@@ -39,8 +39,8 @@ class PreferencesDataStoreImpl(
     }
 
     override fun getLanguageFlow(): Flow<String> {
-        return preferencesDataStore.data.map {
-            it.language
+        return preferencesDataStore.data.map { currentPreferencesData ->
+            currentPreferencesData.language
         }
     }
 
@@ -49,8 +49,8 @@ class PreferencesDataStoreImpl(
     }
 
     override fun isAppLockEnabledFlow(): Flow<Boolean> {
-        return preferencesDataStore.data.map {
-            it.isAppLockEnabled
+        return preferencesDataStore.data.map { currentPreferencesData ->
+            currentPreferencesData.isAppLockEnabled
         }
     }
 
@@ -59,8 +59,8 @@ class PreferencesDataStoreImpl(
     }
 
     override fun getNotificationCountFlow(): Flow<Int> {
-        return preferencesDataStore.data.map {
-            it.notificationCount
+        return preferencesDataStore.data.map { currentPreferencesData ->
+            currentPreferencesData.notificationCount
         }
     }
 
@@ -69,8 +69,8 @@ class PreferencesDataStoreImpl(
     }
 
     override fun getMoneyBalanceFlow(): Flow<Long> {
-        return preferencesDataStore.data.map {
-            it.moneyBalance
+        return preferencesDataStore.data.map { currentPreferencesData ->
+            currentPreferencesData.moneyBalance
         }
     }
 }

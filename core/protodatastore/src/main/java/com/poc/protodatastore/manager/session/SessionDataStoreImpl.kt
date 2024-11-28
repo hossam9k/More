@@ -9,26 +9,26 @@ import kotlinx.coroutines.flow.map
 class SessionDataStoreImpl(private val sessionDataStore: DataStore<Session>) : SessionDataStore {
 
     override suspend fun setAccessToken(accessToken: String) {
-        sessionDataStore.updateData {
-            it.toBuilder().setAccessToken(accessToken).build()
+        sessionDataStore.updateData { currentSession ->
+            currentSession.toBuilder().setAccessToken(accessToken).build()
         }
     }
 
     override suspend fun setRefreshToken(refreshToken: String) {
-        sessionDataStore.updateData {
-            it.toBuilder().setRefreshToken(refreshToken).build()
+        sessionDataStore.updateData { currentSession ->
+            currentSession.toBuilder().setRefreshToken(refreshToken).build()
         }
     }
 
     override suspend fun setUserIdToken(userId: String) {
-        sessionDataStore.updateData {
-            it.toBuilder().setRefreshToken(userId).build()
+        sessionDataStore.updateData { currentSession ->
+            currentSession.toBuilder().setRefreshToken(userId).build()
         }
     }
 
     override suspend fun setSession(accessToken: String, refreshToken: String, userId: String) {
-        sessionDataStore.updateData {
-            it.toBuilder()
+        sessionDataStore.updateData { currentSession ->
+            currentSession.toBuilder()
                 .setAccessToken(accessToken)
                 .setRefreshToken(refreshToken)
                 .setUserId(userId)
@@ -41,8 +41,8 @@ class SessionDataStoreImpl(private val sessionDataStore: DataStore<Session>) : S
     }
 
     override fun getAccessTokenFlow(): Flow<String> {
-        return sessionDataStore.data.map {
-            it.accessToken
+        return sessionDataStore.data.map { currentSession ->
+            currentSession.accessToken
         }
     }
 
@@ -51,8 +51,8 @@ class SessionDataStoreImpl(private val sessionDataStore: DataStore<Session>) : S
     }
 
     override fun getRefreshTokenFlow(): Flow<String> {
-        return sessionDataStore.data.map {
-            it.refreshToken
+        return sessionDataStore.data.map { currentSession ->
+            currentSession.refreshToken
         }
     }
 
@@ -61,8 +61,8 @@ class SessionDataStoreImpl(private val sessionDataStore: DataStore<Session>) : S
     }
 
     override fun getUserIdFlow(): Flow<String> {
-        return sessionDataStore.data.map {
-            it.userId
+        return sessionDataStore.data.map { currentSession ->
+            currentSession.userId
         }
     }
 
@@ -82,8 +82,8 @@ getSession(): Session: This function returns a single instance of Session synchr
   You can collect or observe this flow in your code and react to any changes to the session data as they occur.
  */
     override fun getSessionFlow(): Flow<Session> {
-        return sessionDataStore.data.map {
-            it
+        return sessionDataStore.data.map { currentSession ->
+            currentSession
         }
     }
 }
